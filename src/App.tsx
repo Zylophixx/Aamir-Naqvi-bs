@@ -45,7 +45,7 @@ const desktopImages = [
   { src: '/pc/3-4.png', delay: 0.8, parallaxSpeed: 160 },
   { src: '/pc/1-2.png', delay: 1.0, parallaxSpeed: 200 },
   { src: '/pc/7.png', delay: 1.2, parallaxSpeed: 240 },
-  { src: '/pc/name.png', delay: 0, parallaxSpeed: 0, isStatic: true },
+  { src: '/pc/name.png', delay: 0, parallaxSpeed: 0 },
 
 ];
 
