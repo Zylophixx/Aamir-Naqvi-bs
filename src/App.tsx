@@ -150,6 +150,8 @@ useEffect(() => {
 
   return () => {
     ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+     portfolioTl.kill();
+    st.kill();
   };
 }, []);
 
