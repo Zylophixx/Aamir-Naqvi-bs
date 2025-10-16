@@ -39,14 +39,14 @@ const mobileImages = [
 ];
 
 const desktopImages = [
-  { src: '/pc/me.png', delay: 0.2, parallaxSpeed: 50 },
-  { src: '/pc/me 2.png', delay: 0.4, parallaxSpeed: 80 },
-  { src: '/pc/5-6.png', delay: 0.6, parallaxSpeed: 120 },
-  { src: '/pc/3-4.png', delay: 0.8, parallaxSpeed: 160 },
-  { src: '/pc/1-2.png', delay: 1.0, parallaxSpeed: 200 },
-  { src: '/pc/7.png', delay: 1.2, parallaxSpeed: 240 },
-  { src: '/pc/name.png', delay: 0, parallaxSpeed: 0 },
-
+  { src: '/pc/bg.png', isStatic: true },
+  { src: '/pc/me.png', delay: 0.2 },
+  { src: '/pc/me 2.png', delay: 0.4 },
+  { src: '/pc/5-6.png', delay: 0.6 },
+  { src: '/pc/3-4.png', delay: 0.8 },
+  { src: '/pc/1-2.png', delay: 1.0 },
+  { src: '/pc/7.png', delay: 1.2 },
+  { src: '/pc/name.png', delay: 0 },
 ];
 
  
@@ -95,32 +95,25 @@ useEffect(() => {
   ScrollTrigger.getAll().forEach(trigger => trigger.kill());
 
   if (!isMobile() && portfolioSectionRef.current) {
-    // Wait for initial animations to complete, then apply scroll parallax
-    setTimeout(() => {
-      desktopImagesRef.current.forEach((element, index) => {
-        if (element && desktopImages[index] && desktopImages[index].parallaxSpeed) {
-          // Store the current position after slideUp animation
-          const currentY = gsap.getProperty(element, "y") || 0;
+    // Parallax animation for each desktop image with different speeds
+    desktopImagesRef.current.forEach((element, index) => {
+      if (element && !desktopImages[index]?.isStatic) {
+        // Each layer moves at a different speed based on its index
+        const speed = (index + 1) * 80;
 
-          gsap.fromTo(element,
-            {
-              y: currentY
-            },
-            {
-              y: currentY + desktopImages[index].parallaxSpeed,
-              ease: "none",
-              scrollTrigger: {
-                trigger: portfolioSectionRef.current,
-                start: "top bottom",
-                end: "bottom top",
-                scrub: 1,
-                markers: false,
-              }
-            }
-          );
-        }
-      });
-    }, 2000); // Wait for slideUp animations to complete
+        gsap.to(element, {
+          y: speed,
+          ease: "none",
+          scrollTrigger: {
+            trigger: portfolioSectionRef.current,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1,
+            markers: false,
+          }
+        });
+      }
+    });
 
     // Section parallax
     gsap.to(portfolioSectionRef.current, {
