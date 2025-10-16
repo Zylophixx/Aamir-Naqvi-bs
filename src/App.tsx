@@ -104,7 +104,7 @@ useEffect(() => {
         trigger: portfolioSectionRef.current,
         start: "top bottom",
         end: "bottom top",
-        scrub: 4,
+        scrub: 3,
         markers: false, // Set to true for debugging
       }
     }).to(desktopElements, { y: 200, ease: "power1.out" });
