@@ -95,49 +95,19 @@ useEffect(() => {
   ScrollTrigger.getAll().forEach(trigger => trigger.kill());
 
   if (!isMobile() && portfolioSectionRef.current) {
-    // Filter out background images before applying parallax
-    const excludedBackgrounds = ['bg.png', 'mobile bg.png', 'name.png', 'mbname.png'];
+    // Use GSAP's class selector for desktop images
+    const desktopElements = gsap.utils.toArray(".desktop-image");
 
-    const mobileAnimatableElements = (mobileImagesRef.current || [])
-      .map((el, index) => ({ element: el, config: mobileImages[index] }))
-      .filter(({ element, config }) => {
-        if (!element) return false;
-        const imgSrc = config.src;
-        return !excludedBackgrounds.some(bg => imgSrc.includes(bg));
-      })
-      .map(({ element }) => element);
-
-    const desktopAnimatableElements = (desktopImagesRef.current || [])
-      .map((el, index) => ({ element: el, config: desktopImages[index] }))
-      .filter(({ element, config }) => {
-        if (!element) return false;
-        const imgSrc = config.src;
-        return !excludedBackgrounds.some(bg => imgSrc.includes(bg));
-      })
-      .map(({ element }) => element);
-
-    const heroElements = [
-      ...mobileAnimatableElements,
-      ...desktopAnimatableElements
-    ];
-
-    // Create a timeline for hero elements (excluding backgrounds)
-    const heroTl = gsap.timeline({
+    // Create a timeline for desktop images with scroll animation
+    gsap.timeline({
       scrollTrigger: {
         trigger: portfolioSectionRef.current,
         start: "top bottom",
-        end: "top 70%",
-        scrub: 4,
-        invalidateOnRefresh: false,
+        end: "bottom top",
+        scrub: true,
+        markers: false, // Set to true for debugging
       }
-    });
-
-    heroElements.forEach(element => {
-      heroTl.to(element, {
-        y: 50,
-        ease: "power2.out"
-      }, 0);
-    });
+    }).to(desktopElements, { y: 50, ease: "power1.out" });
 
     // Section parallax
     gsap.to(portfolioSectionRef.current, {
@@ -225,7 +195,7 @@ useEffect(() => {
             <div
               key={index}
               ref={(el) => (desktopImagesRef.current[index] = el)}
-              className="hero-image-layer fixed inset-0 w-full h-full"
+              className="desktop-image hero-image-layer fixed inset-0 w-full h-full"
               style={{
                 zIndex: img.isStatic ? 0 : index + 10,
                 animation: img.isStatic ? 'none' : `slideUp 1s ease-out ${img.delay}s forwards`,
