@@ -114,25 +114,25 @@ useEffect(() => {
       }
     });
 
-    // Portfolio section trying to push up but can't - struggling animation
-    if (portfolioSectionRef.current) {
-      const portfolioAnimation = gsap.to(portfolioSectionRef.current, {
+     if (!portfolioSectionRef.current) return;
+
+  // Create a timeline for the "struggle" movement
+  const portfolioTl = gsap.timeline({ repeat: -1, yoyo: true });
+  portfolioTl.to(portfolioSectionRef.current, {
     y: -30,
     duration: 2,
     ease: "power2.inOut",
-    repeat: -1,
-    yoyo: true,
   });
 
+  // ScrollTrigger to stop the timeline
   ScrollTrigger.create({
     trigger: portfolioSectionRef.current,
-    start: "top center", // adjust so it triggers exactly when visible
+    start: "top center",
     onEnter: () => {
-      portfolioAnimation.kill(); // stop the looping animation
+      portfolioTl.pause(); // pause instead of kill for smooth stop
       gsap.to(portfolioSectionRef.current, { y: 0, duration: 0.5 }); // reset position
     },
   });
-    }
 
     // Show/hide contact section
     ScrollTrigger.create({
