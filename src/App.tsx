@@ -95,27 +95,32 @@ useEffect(() => {
   ScrollTrigger.getAll().forEach(trigger => trigger.kill());
 
   if (!isMobile() && portfolioSectionRef.current) {
-    // Animate each desktop image independently with different speeds
-    desktopImagesRef.current.forEach((element, index) => {
-      if (element && desktopImages[index] && desktopImages[index].parallaxSpeed) {
-        gsap.fromTo(element,
-          {
-            y: 0
-          },
-          {
-            y: desktopImages[index].parallaxSpeed,
-            ease: "none",
-            scrollTrigger: {
-              trigger: portfolioSectionRef.current,
-              start: "top bottom",
-              end: "bottom top",
-              scrub: 1,
-              markers: true,
+    // Wait for initial animations to complete, then apply scroll parallax
+    setTimeout(() => {
+      desktopImagesRef.current.forEach((element, index) => {
+        if (element && desktopImages[index] && desktopImages[index].parallaxSpeed) {
+          // Store the current position after slideUp animation
+          const currentY = gsap.getProperty(element, "y") || 0;
+
+          gsap.fromTo(element,
+            {
+              y: currentY
+            },
+            {
+              y: currentY + desktopImages[index].parallaxSpeed,
+              ease: "none",
+              scrollTrigger: {
+                trigger: portfolioSectionRef.current,
+                start: "top bottom",
+                end: "bottom top",
+                scrub: 1,
+                markers: false,
+              }
             }
-          }
-        );
-      }
-    });
+          );
+        }
+      });
+    }, 2000); // Wait for slideUp animations to complete
 
     // Section parallax
     gsap.to(portfolioSectionRef.current, {
