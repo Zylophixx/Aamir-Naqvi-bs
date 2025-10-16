@@ -39,7 +39,7 @@ const mobileImages = [
 ];
 
 const desktopImages = [ 
-  { src: '/pc/me.png', delay: 1.2, isStatic: true },
+  { src: '/pc/me.png',  isStatic: true,delay: 1.2 },
   { src: '/pc/me 2.png', delay: 1.4, isStatic: true },
   { src: '/pc/5-6.png', delay: 0.6, isStatic: true },
   { src: '/pc/3-4.png', delay: 0.8},
