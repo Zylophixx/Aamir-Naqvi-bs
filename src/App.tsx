@@ -95,36 +95,35 @@ useEffect(() => {
   ScrollTrigger.getAll().forEach(trigger => trigger.kill());
 
   if (!isMobile() && heroRef.current) {
-    // Parallax animation for each desktop image with different speeds during scroll
+    // Constant floating animation for each desktop image (except background and name)
     desktopImagesRef.current.forEach((element, index) => {
-      if (element && !desktopImages[index]?.isStatic) {
-        // Each layer moves downward at different speeds - creating depth
-        const speed = (index + 1) * 100;
+      if (element && !desktopImages[index]?.isStatic && index !== desktopImages.length - 1) {
+        // Each layer has different speed and delay for floating down effect
+        const duration = 3 + (index * 0.5); // Different durations
+        const yOffset = 15 + (index * 5); // Different distances
+        const delay = index * 0.3; // Staggered start
 
         gsap.to(element, {
-          y: speed,
-          ease: "none",
-          scrollTrigger: {
-            trigger: heroRef.current,
-            start: "top top",
-            end: "bottom top",
-            scrub: 1,
-            markers: false,
-          }
+          y: `+=${yOffset}`,
+          duration: duration,
+          ease: "sine.inOut",
+          repeat: -1,
+          yoyo: true,
+          delay: delay,
         });
       }
     });
 
-    // Section parallax
-    gsap.to(portfolioSectionRef.current, {
-      y: -900,
-      scrollTrigger: {
-        trigger: portfolioSectionRef.current,
-        start: "top bottom",
-        end: "bottom top",
-        scrub: true,
-      }
-    });
+    // Portfolio section trying to push up but can't - struggling animation
+    if (portfolioSectionRef.current) {
+      gsap.to(portfolioSectionRef.current, {
+        y: -30,
+        duration: 2,
+        ease: "power2.inOut",
+        repeat: -1,
+        yoyo: true,
+      });
+    }
 
     // Show/hide contact section
     ScrollTrigger.create({
