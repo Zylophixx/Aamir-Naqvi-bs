@@ -127,7 +127,7 @@ useEffect(() => {
       // Stop the struggling animation once portfolio is scrolled into view
       ScrollTrigger.create({
         trigger: portfolioSectionRef.current,
-        start: "top center",
+        start: "bottom center",
         onEnter: () => {
           portfolioAnimation.kill();
           gsap.to(portfolioSectionRef.current, { y: 0, duration: 0.5 });
