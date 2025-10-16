@@ -114,30 +114,7 @@ useEffect(() => {
       }
     });
 
-     if (!portfolioSectionRef.current) return;
-
-  // Timeline for struggle movement, only when NOT in view
-  const portfolioTl = gsap.timeline({ repeat: -1, yoyo: true });
-  portfolioTl.to(portfolioSectionRef.current, {
-    y: -30,
-    duration: 2,
-    ease: "power2.inOut",
-  });
-
-  // ScrollTrigger to **pause/resume** instead of kill
-  const st = ScrollTrigger.create({
-    trigger: portfolioSectionRef.current,
-    start: "top center",
-    end: "bottom center",
-    onEnter: () => {
-      portfolioTl.pause(); // stop struggling when in view
-      gsap.to(portfolioSectionRef.current, { y: 0, duration: 0.3 }); // reset position
-    },
-    onLeaveBack: () => {
-      portfolioTl.resume(); // resume struggling when scrolling back up
-    },
-  });
-
+   
     // Show/hide contact section
     ScrollTrigger.create({
       trigger: portfolioSectionRef.current,
