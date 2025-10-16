@@ -116,7 +116,7 @@ useEffect(() => {
 
      if (!portfolioSectionRef.current) return;
 
-  // Create a timeline for the "struggle" movement
+  // Timeline for struggle movement, only when NOT in view
   const portfolioTl = gsap.timeline({ repeat: -1, yoyo: true });
   portfolioTl.to(portfolioSectionRef.current, {
     y: -30,
@@ -124,13 +124,17 @@ useEffect(() => {
     ease: "power2.inOut",
   });
 
-  // ScrollTrigger to stop the timeline
-  ScrollTrigger.create({
+  // ScrollTrigger to **pause/resume** instead of kill
+  const st = ScrollTrigger.create({
     trigger: portfolioSectionRef.current,
     start: "top center",
+    end: "bottom center",
     onEnter: () => {
-      portfolioTl.pause(); // pause instead of kill for smooth stop
-      gsap.to(portfolioSectionRef.current, { y: 0, duration: 0.5 }); // reset position
+      portfolioTl.pause(); // stop struggling when in view
+      gsap.to(portfolioSectionRef.current, { y: 0, duration: 0.3 }); // reset position
+    },
+    onLeaveBack: () => {
+      portfolioTl.resume(); // resume struggling when scrolling back up
     },
   });
 
