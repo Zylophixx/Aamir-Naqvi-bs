@@ -98,8 +98,8 @@ useEffect(() => {
     // Use GSAP's class selector for desktop images
     const desktopElements = gsap.utils.toArray(".desktop-image");
 
-    // Create a timeline for desktop images with scroll animation
-    gsap.timeline({
+    // Create a timeline for desktop images with staggered scroll animation
+    const tl = gsap.timeline({
       scrollTrigger: {
         trigger: portfolioSectionRef.current,
         start: "top bottom",
@@ -107,7 +107,15 @@ useEffect(() => {
         scrub: 3,
         markers: false, // Set to true for debugging
       }
-    }).to(desktopElements, { y: 200, ease: "power1.out" });
+    });
+
+    // Animate each element with a stagger delay for disconnected feel
+    desktopElements.forEach((element, index) => {
+      tl.to(element, {
+        y: 200,
+        ease: "power1.out"
+      }, index * 0.15); // Stagger delay of 0.15s per element
+    });
 
     // Section parallax
     gsap.to(portfolioSectionRef.current, {
