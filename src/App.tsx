@@ -38,15 +38,15 @@ const mobileImages = [
   { src: '/mobile/mobile bg.png', delay: 1.4, isStatic: true },
 ];
 
-const desktopImages = [ 
-  { src: '/pc/me.png',  isStatic: true,delay: 1.2 },
-  { src: '/pc/me 2.png', delay: 1.4, isStatic: true },
-  { src: '/pc/5-6.png', delay: 0.6, isStatic: true },
-  { src: '/pc/3-4.png', delay: 0.8},
-  { src: '/pc/1-2.png', delay: 1.0, isStatic: true}, 
-  { src: '/pc/7.png', delay: 1.2  },
-  { src: '/pc/name.png', delay: 0  }, 
-
+const desktopImages = [
+  { src: '/pc/me.png', delay: 0.2, parallaxSpeed: 50 },
+  { src: '/pc/me 2.png', delay: 0.4, parallaxSpeed: 80 },
+  { src: '/pc/5-6.png', delay: 0.6, parallaxSpeed: 120 },
+  { src: '/pc/3-4.png', delay: 0.8, parallaxSpeed: 160 },
+  { src: '/pc/1-2.png', delay: 1.0, parallaxSpeed: 200 },
+  { src: '/pc/7.png', delay: 1.2, parallaxSpeed: 240 },
+  { src: '/pc/name.png', delay: 0, parallaxSpeed: 0 },
+  { src: '/pc/bg.png', isStatic: true },
 ];
 
  
@@ -95,26 +95,21 @@ useEffect(() => {
   ScrollTrigger.getAll().forEach(trigger => trigger.kill());
 
   if (!isMobile() && portfolioSectionRef.current) {
-    // Use GSAP's class selector for desktop images
-    const desktopElements = gsap.utils.toArray(".desktop-image");
-
-    // Create a timeline for desktop images with staggered scroll animation
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: portfolioSectionRef.current,
-        start: "top bottom",
-        end: "bottom top",
-        scrub: 3,
-        markers: false, // Set to true for debugging
+    // Animate each desktop image independently with different speeds
+    desktopImagesRef.current.forEach((element, index) => {
+      if (element && desktopImages[index] && desktopImages[index].parallaxSpeed) {
+        gsap.to(element, {
+          y: desktopImages[index].parallaxSpeed,
+          ease: "none",
+          scrollTrigger: {
+            trigger: portfolioSectionRef.current,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 2,
+            markers: false,
+          }
+        });
       }
-    });
-
-    // Animate each element with a stagger delay for disconnected feel
-    desktopElements.forEach((element, index) => {
-      tl.to(element, {
-        y: 200,
-        ease: "power1.out"
-      }, index * 0.15); // Stagger delay of 0.15s per element
     });
 
     // Section parallax
