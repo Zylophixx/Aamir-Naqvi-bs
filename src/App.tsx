@@ -98,17 +98,22 @@ useEffect(() => {
     // Animate each desktop image independently with different speeds
     desktopImagesRef.current.forEach((element, index) => {
       if (element && desktopImages[index] && desktopImages[index].parallaxSpeed) {
-        gsap.to(element, {
-          y: desktopImages[index].parallaxSpeed,
-          ease: "none",
-          scrollTrigger: {
-            trigger: portfolioSectionRef.current,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: 2,
-            markers: false,
+        gsap.fromTo(element,
+          {
+            y: 0
+          },
+          {
+            y: desktopImages[index].parallaxSpeed,
+            ease: "none",
+            scrollTrigger: {
+              trigger: portfolioSectionRef.current,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: 1,
+              markers: true,
+            }
           }
-        });
+        );
       }
     });
 
@@ -216,12 +221,13 @@ useEffect(() => {
       </div>
 
       {/* Portfolio Section */}
-      <div 
-        ref={portfolioSectionRef} 
+      <div
+        ref={portfolioSectionRef}
         className="relative w-full bg-[#f0f0f0] z-[100] rounded-t-[3rem] rounded-b-[3rem] opacity-100"
-        style={{ 
+        style={{
           minHeight: window.innerWidth < 768 ? 'calc(var(--mobile-vh) * 100)' : '100vh',
-          zIndex: 9999 
+          zIndex: 9999,
+          boxShadow: '0 -20px 60px rgba(255, 255, 255, 0.4), 0 -10px 30px rgba(255, 255, 255, 0.3)'
         }}
       >
 
