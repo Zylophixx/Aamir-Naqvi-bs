@@ -94,19 +94,19 @@ useEffect(() => {
   gsap.registerPlugin(ScrollTrigger);
   ScrollTrigger.getAll().forEach(trigger => trigger.kill());
 
-  if (!isMobile() && portfolioSectionRef.current) {
-    // Parallax animation for each desktop image with different speeds
+  if (!isMobile() && heroRef.current) {
+    // Parallax animation for each desktop image with different speeds during scroll
     desktopImagesRef.current.forEach((element, index) => {
       if (element && !desktopImages[index]?.isStatic) {
-        // Each layer moves at a different speed based on its index
-        const speed = (index + 1) * 80;
+        // Each layer moves downward at different speeds - creating depth
+        const speed = (index + 1) * 100;
 
         gsap.to(element, {
           y: speed,
           ease: "none",
           scrollTrigger: {
-            trigger: portfolioSectionRef.current,
-            start: "top bottom",
+            trigger: heroRef.current,
+            start: "top top",
             end: "bottom top",
             scrub: 1,
             markers: false,
