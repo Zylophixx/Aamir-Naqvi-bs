@@ -107,7 +107,7 @@ useEffect(() => {
         scrub: 4,
         markers: false, // Set to true for debugging
       }
-    }).to(desktopElements, { y: 500, ease: "power1.out" });
+    }).to(desktopElements, { y: 200, ease: "power1.out" });
 
     // Section parallax
     gsap.to(portfolioSectionRef.current, {
