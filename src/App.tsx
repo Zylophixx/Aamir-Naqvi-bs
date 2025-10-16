@@ -38,15 +38,15 @@ const mobileImages = [
   { src: '/mobile/mobile bg.png', delay: 1.4, isStatic: true },
 ];
 
-const desktopImages = [
-  { src: '/pc/bg.png', isStatic: true },
-  { src: '/pc/me.png', delay: 0.2 },
-  { src: '/pc/me 2.png', delay: 0.4 },
+const desktopImages = [ 
+  { src: '/pc/me.png', delay: 1.2 },
+  { src: '/pc/me 2.png', delay: 1.4 },
   { src: '/pc/5-6.png', delay: 0.6 },
   { src: '/pc/3-4.png', delay: 0.8 },
-  { src: '/pc/1-2.png', delay: 1.0 },
+  { src: '/pc/1-2.png', delay: 1.0}, 
   { src: '/pc/7.png', delay: 1.2 },
-  { src: '/pc/name.png', delay: 0 },
+  { src: '/pc/name.png', delay: 0,  }, 
+  { src: '/pc/bg.png', isStatic: true},  
 ];
 
  
@@ -94,27 +94,32 @@ useEffect(() => {
   gsap.registerPlugin(ScrollTrigger);
   ScrollTrigger.getAll().forEach(trigger => trigger.kill());
 
-  if (!isMobile() && heroRef.current) {
-    // Constant floating animation for each desktop image (except background and name)
-    desktopImagesRef.current.forEach((element, index) => {
-      if (element && !desktopImages[index]?.isStatic && index !== desktopImages.length - 1) {
-        // Each layer has different speed and delay for floating down effect
-        const duration = 3 + (index * 0.5); // Different durations
-        const yOffset = 15 + (index * 5); // Different distances
-        const delay = index * 0.3; // Staggered start
+  if (!isMobile() && portfolioSectionRef.current) {
+    // Use GSAP's class selector for desktop images
+    const desktopElements = gsap.utils.toArray(".desktop-image");
 
-        gsap.to(element, {
-          y: `+=${yOffset}`,
-          duration: duration,
-          ease: "sine.inOut",
-          repeat: -1,
-          yoyo: true,
-          delay: delay,
-        });
+    // Create a timeline for desktop images with scroll animation
+    gsap.timeline({
+      scrollTrigger: {
+        trigger: portfolioSectionRef.current,
+        start: "top bottom",
+        end: "bottom top",
+        scrub: true,
+        markers: false, // Set to true for debugging
+      }
+    }).to(desktopElements, { y: 50, ease: "power1.out" });
+
+    // Section parallax
+    gsap.to(portfolioSectionRef.current, {
+      y: -900,
+      scrollTrigger: {
+        trigger: portfolioSectionRef.current,
+        start: "top bottom",
+        end: "bottom top",
+        scrub: true,
       }
     });
 
-   
     // Show/hide contact section
     ScrollTrigger.create({
       trigger: portfolioSectionRef.current,
@@ -127,7 +132,6 @@ useEffect(() => {
 
   return () => {
     ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-  
   };
 }, []);
 
@@ -144,7 +148,7 @@ useEffect(() => {
              sm:bg-cover 
              max-sm:bg-cover max-sm:bg-center"
   style={{
-    backgroundImage: `url('/pc/bg.png')`,
+    backgroundImage: `url('/bg.png')`,
     backgroundAttachment: 'fixed',
     backgroundSize: window.innerWidth < 640 ? 'cover' : 'cover'
   }}
@@ -209,13 +213,12 @@ useEffect(() => {
       </div>
 
       {/* Portfolio Section */}
-      <div
-        ref={portfolioSectionRef}
+      <div 
+        ref={portfolioSectionRef} 
         className="relative w-full bg-[#f0f0f0] z-[100] rounded-t-[3rem] rounded-b-[3rem] opacity-100"
-        style={{
+        style={{ 
           minHeight: window.innerWidth < 768 ? 'calc(var(--mobile-vh) * 100)' : '100vh',
-          zIndex: 9999,
-          boxShadow: '0 -20px 60px rgba(255, 255, 255, 0.4), 0 -10px 30px rgba(255, 255, 255, 0.3)'
+          zIndex: 9999 
         }}
       >
 
