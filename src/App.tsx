@@ -116,12 +116,22 @@ useEffect(() => {
 
     // Portfolio section trying to push up but can't - struggling animation
     if (portfolioSectionRef.current) {
-      gsap.to(portfolioSectionRef.current, {
+      const portfolioAnimation = gsap.to(portfolioSectionRef.current, {
         y: -30,
         duration: 2,
         ease: "power2.inOut",
         repeat: -1,
         yoyo: true,
+      });
+
+      // Stop the struggling animation once portfolio is scrolled into view
+      ScrollTrigger.create({
+        trigger: portfolioSectionRef.current,
+        start: "top 80%",
+        onEnter: () => {
+          portfolioAnimation.kill();
+          gsap.to(portfolioSectionRef.current, { y: 0, duration: 0.5 });
+        },
       });
     }
 
